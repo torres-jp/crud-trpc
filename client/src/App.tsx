@@ -2,8 +2,7 @@ import { trpc } from "./trpc";
 import { httpBatchLink } from "@trpc/client";
 import { useState } from "react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import NotesList from "./components/NotesList";
-import NoteForm from "./components/NoteForm";
+import { AppContent } from "./AppContent";
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
@@ -21,8 +20,7 @@ function App() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <NoteForm />
-        <NotesList />
+        <AppContent />
       </QueryClientProvider>
     </trpc.Provider>
   );
