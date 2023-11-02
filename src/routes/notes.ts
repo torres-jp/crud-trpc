@@ -1,14 +1,10 @@
 import { publicProcedure, router } from "../trpc";
+import Note from "../models/note";
 import { z } from "zod";
 
-const getNotes = publicProcedure.query(() => {
-  return [
-    {
-      id: 1,
-      title: "Note 1",
-      description: "Description 1",
-    },
-  ];
+const getNotes = publicProcedure.query(async () => {
+  const notes = await Note.find();
+  return notes;
 });
 
 const createNote = publicProcedure
@@ -18,9 +14,13 @@ const createNote = publicProcedure
       description: z.string(),
     })
   )
-  .mutation(({ input }) => {
-    console.log(input);
-    return "recived";
+  .mutation(async ({ input }) => {
+    const newNote = new Note({
+      title: input.title,
+      description: input.description,
+    });
+    const savedNote = await newNote.save();
+    return savedNote;
   });
 
 export const notesRouter = router({
